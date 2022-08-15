@@ -53,10 +53,13 @@ async def trim(bot, message):
         height = metadata["height"]
         duration = metadata["duration"]
         attributes = [DocumentAttributeVideo(duration=duration, w=width, h=height, supports_streaming=True)]
-        video = await bot.send_video(
+        
+    except Exception:
+        try:
+            video = await bot.send_video(
             out2,
             supports_streaming=True,
-            caption=caption,
+            caption=text,
             thumb=thumb,
             duration=duration,
             width=width,
@@ -64,15 +67,11 @@ async def trim(bot, message):
             progress=progress_for_pyrogram,
             progress_args=("`Yükleniyor...`", msg, c_time)
         )
-        await Drone.send_file(event.chat_id, uploader, caption=text, thumb=JPG3, attributes=attributes, force_document=False)
-    except Exception:
-        try:
-            uploader = await fast_upload(f'{out2}', f'{out2}', UT, Drone, edit, '**UPLOADING:**')
-            await Drone.send_file(event.chat_id, uploader, caption=text, thumb=JPG, force_document=True)
         except Exception as e:
             print(e)
-            return await edit.edit(f"An error occured while uploading.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False)
-    await edit.delete()
-    os.remove(name)
-    os.remove(out2)
+            return await msg.edit(f"Yüklenirken bir hata oluştu...\n\n@mmagneto'ya danış..")
+        os.remove(name)
+        os.remove(out2)
+
+bot.run()
       
