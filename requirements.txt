@@ -1,3 +1,12 @@
 pyrogram
 telethon
 ffmpeg
+dnspython
+ethon==1.3.8 #for VC
+heroku3
+motor
+Pillow>=5.3.0
+pymongo
+pymongo[srv]
+requests
+telegraph
