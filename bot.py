@@ -1,4 +1,4 @@
-from pyrogram import Client
+from pyrogram import Client, filters
 from trim import trim
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply 
 from config import BOT_TOKEN, API_HASH, API_ID
