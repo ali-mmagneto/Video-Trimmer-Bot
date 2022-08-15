@@ -1,5 +1,7 @@
 from pyrogram import Client
 from trimmer import trim
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply 
+
 
 video_mimetype = [
     "video/x-flv",
