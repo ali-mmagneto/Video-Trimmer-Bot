@@ -7,9 +7,7 @@ from telethon.tl.types import DocumentAttributeVideo
 from ethon.telefunc import fast_download, fast_upload
 from ethon.pyfunc import video_metadata, bash
 from ethon.pyutils import rename
-
-
-from LOCAL.localisation import SUPPORT_LINK, JPG, JPG2, JPG3
+from pyrogram import Client
 
 @Client.on_message(filters.video)
 async def trim(bot, message): 
