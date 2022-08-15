@@ -1,7 +1,7 @@
 from pyrogram import Client
 from trim import trim
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply 
-
+from config import BOT_TOKEN, API_HASH, API_ID
 
 video_mimetype = [
     "video/x-flv",
