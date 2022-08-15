@@ -19,8 +19,6 @@ video_mimetype = [
     "video/mpeg"
 ]
 
-
-
 @Client.on_message((filters.video | filters.document)
 async def video(bot, message):
     if message.document:
