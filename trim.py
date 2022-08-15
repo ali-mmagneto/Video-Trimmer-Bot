@@ -10,6 +10,7 @@ from ethon.telefunc import fast_download, fast_upload
 from ethon.pyfunc import video_metadata, bash
 from ethon.pyutils import rename
 from pyrogram import Client
+from progress import progress_for_pyrogram
 
 async def trim(bot, message): 
     msg = await bot.send_message(chat_id, "`işlem yapılıyor..`")
