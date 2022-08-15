@@ -9,7 +9,15 @@ from ethon.pyfunc import video_metadata, bash
 from ethon.pyutils import rename
 from pyrogram import Client
 
-@Client.on_message(filters.video)
+bot = Client(
+    'trimmer',
+    bot_token=BOT_TOKEN,
+    api_id=APP_ID,
+    api_hash=API_HASH,
+    plugins=plugins
+    )
+
+@Client.on_message((filters.video | filters.document))
 async def trim(bot, message): 
     msg = await bot.send_message(chat_id, "`işlem yapılıyor..`")
     if message.video:
@@ -23,7 +31,7 @@ async def trim(bot, message):
 
     if file_name is None:
         file_name = user_id
-    time = time.time()
+    dtime = time.time()
     path = os.path.join(
             DOWNLOAD_DIR,
             user_id,
@@ -33,7 +41,7 @@ async def trim(bot, message):
     filepath = await message.download(
         file_name=path,
         progress=progress_for_pyrogram,
-        progress_args=("`İndiriliyor...`", msg, time))
+        progress_args=("`İndiriliyor...`", msg, dtime))
     return await msg.edit(f"indirirken hata oluştu.\n\n@mmagneto'ya danış...") 
     try:
         await edit.edit("kesiliyor.")
@@ -43,7 +51,7 @@ async def trim(bot, message):
     except Exception as e:
         print(e)
         return await msg.edit(f"Kesilirken bir hata oldu.\n\n@mmagneto'ya danış...", link_preview=False)
-    UT = time.time()
+    utime = time.time()
     text = f"{out2}"
     try:
         metadata = video_metadata(out2)
@@ -63,7 +71,7 @@ async def trim(bot, message):
             width=width,
             height=height,
             progress=progress_for_pyrogram,
-            progress_args=("`Yükleniyor...`", msg, time)
+            progress_args=("`Yükleniyor...`", msg, utime)
         )
         except Exception as e:
             print(e)
