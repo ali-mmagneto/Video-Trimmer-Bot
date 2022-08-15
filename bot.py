@@ -1,5 +1,5 @@
 from pyrogram import Client
-from trimmer import trim
+from trim import trim
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply 
 
 
