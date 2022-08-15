@@ -9,15 +9,6 @@ from ethon.pyfunc import video_metadata, bash
 from ethon.pyutils import rename
 from pyrogram import Client
 
-bot = Client(
-    'trimmer',
-    bot_token=BOT_TOKEN,
-    api_id=APP_ID,
-    api_hash=API_HASH,
-    plugins=plugins
-    )
-
-@Client.on_message((filters.video | filters.document))
 async def trim(bot, message): 
     msg = await bot.send_message(chat_id, "`işlem yapılıyor..`")
     if message.video:
@@ -78,6 +69,4 @@ async def trim(bot, message):
             return await msg.edit(f"Yüklenirken bir hata oluştu...\n\n@mmagneto'ya danış..")
         os.remove(name)
         os.remove(out2)
-
-bot.run()
       
