@@ -11,54 +11,59 @@ from ethon.pyutils import rename
 
 from LOCAL.localisation import SUPPORT_LINK, JPG, JPG2, JPG3
 
-async def trim(event, msg, st, et):
-    Drone = event.client
-    edit = await Drone.send_message(event.chat_id, "Trying to process.", reply_to=msg.id)
-    new_name = "out_" + dt.now().isoformat("_", "seconds")
-    if hasattr(msg.media, "document"):
-        file = msg.media.document
+@Client.on_message(filters.video)
+async def trim(bot, message): 
+    msg = await bot.send_message(chat_id, "`işlem yapılıyor..`")
+    if message.video:
+         file_name = message.video.file_name
+    elif message.document:
+         file_name = message.document.file_name
+    elif message.audio:
+         file_name = message.audio.file_name
     else:
-        file = msg.media
-    mime = msg.file.mime_type
-    if 'mp4' in mime:
-        name = "media_" + dt.now().isoformat("_", "seconds") + ".mp4"
-        out = new_name + ".mp4"
-    elif msg.video:
-        name = "media_" + dt.now().isoformat("_", "seconds") + ".mp4"
-        out = new_name + ".mp4"
-    elif 'x-matroska' in mime:
-        name = "media_" + dt.now().isoformat("_", "seconds") + ".mkv" 
-        out = new_name + ".mkv"       
-    elif 'webm' in mime:
-        name = "media_" + dt.now().isoformat("_", "seconds") + ".webm" 
-        out = new_name + ".webm"
-    else:
-        name = msg.file.name
-        ext = (name.split("."))[1]
-        out = new_name + ext
+         file_name = None
+
+    if file_name is None:
+        file_name = user_id
     DT = time.time()
+    path = os.path.join(
+            DOWNLOAD_DIR,
+            user_id,
+            random,
+            file_name
+        )
+    filepath = await message.download(
+        file_name=path,
+        progress=progress_for_pyrogram,
+        progress_args=("`İndiriliyor...`", msg, c_time))
+    return await msg.edit(f"indirirken hata oluştu.\n\n@mmagneto'ya danış...") 
     try:
-        await fast_download(name, file, Drone, edit, DT, "**DOWNLOADING:**")
-    except Exception as e:
-        print(e)
-        return await edit.edit(f"An error occured while downloading.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False) 
-    try:
-        await edit.edit("Trimming.")
-        bash(f'ffmpeg -i {name} -ss {st} -to {et} -acodec copy -vcodec copy {out}')
-        out2 = new_name + '_2_' + '.mp4'
+        await edit.edit("kesiliyor.")
+        bash(f'ffmpeg -i {filepath} -ss {st} -to {et} -acodec copy -vcodec copy {out}')
+        out2 = file_name + '_2_' + '.mp4'
         rename(out, out2)
     except Exception as e:
         print(e)
-        return await edit.edit(f"An error occured while trimming!\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False)
+        return await msg.edit(f"Kesilirken bir hata oldu.\n\n@mmagneto'ya danış...", link_preview=False)
     UT = time.time()
-    text = f"**TRIMMED by :** @{BOT_UN}"
+    text = f"{out2}"
     try:
         metadata = video_metadata(out2)
         width = metadata["width"]
         height = metadata["height"]
         duration = metadata["duration"]
         attributes = [DocumentAttributeVideo(duration=duration, w=width, h=height, supports_streaming=True)]
-        uploader = await fast_upload(f'{out2}', f'{out2}', UT, Drone, edit, '**UPLOADING:**')
+        video = await bot.send_video(
+            out2,
+            supports_streaming=True,
+            caption=caption,
+            thumb=thumb,
+            duration=duration,
+            width=width,
+            height=height,
+            progress=progress_for_pyrogram,
+            progress_args=("`Yükleniyor...`", msg, c_time)
+        )
         await Drone.send_file(event.chat_id, uploader, caption=text, thumb=JPG3, attributes=attributes, force_document=False)
     except Exception:
         try:
