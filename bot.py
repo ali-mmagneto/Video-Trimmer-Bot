@@ -23,7 +23,7 @@ async def trim(bot, message):
 
     if file_name is None:
         file_name = user_id
-    DT = time.time()
+    time = time.time()
     path = os.path.join(
             DOWNLOAD_DIR,
             user_id,
@@ -33,7 +33,7 @@ async def trim(bot, message):
     filepath = await message.download(
         file_name=path,
         progress=progress_for_pyrogram,
-        progress_args=("`İndiriliyor...`", msg, c_time))
+        progress_args=("`İndiriliyor...`", msg, time))
     return await msg.edit(f"indirirken hata oluştu.\n\n@mmagneto'ya danış...") 
     try:
         await edit.edit("kesiliyor.")
@@ -63,7 +63,7 @@ async def trim(bot, message):
             width=width,
             height=height,
             progress=progress_for_pyrogram,
-            progress_args=("`Yükleniyor...`", msg, c_time)
+            progress_args=("`Yükleniyor...`", msg, time)
         )
         except Exception as e:
             print(e)
