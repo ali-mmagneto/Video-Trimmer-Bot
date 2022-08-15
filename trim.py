@@ -1,5 +1,7 @@
 import time, os
 
+from config import DOWNLOAD_DIR
+
 from datetime import datetime as dt
 from telethon import events
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
