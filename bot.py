@@ -19,6 +19,14 @@ video_mimetype = [
     "video/mpeg"
 ]
 
+bot = Client(
+    'trimmer',
+    bot_token=BOT_TOKEN,
+    api_id=APP_ID,
+    api_hash=API_HASH,
+    plugins=plugins
+    )
+
 @Client.on_message((filters.video | filters.document))
 async def video(bot, message):
     if message.document:
@@ -42,3 +50,5 @@ async def video(bot, message):
         print(f)
         return await bot.send_message("hata oldu")
     await trim(message, baslangic, bitis)
+
+bot.run()
