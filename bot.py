@@ -47,7 +47,7 @@ async def trim(bot, message):
         await edit.edit("kesiliyor.")
         bash(f'ffmpeg -i {filepath} -ss {st} -to {et} -acodec copy -vcodec copy {out}')
         out2 = file_name + '_2_' + '.mp4'
-        rename(out, out2)
+        rename(file_name, out2)
     except Exception as e:
         print(e)
         return await msg.edit(f"Kesilirken bir hata oldu.\n\n@mmagneto'ya danış...", link_preview=False)
