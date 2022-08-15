@@ -25,8 +25,7 @@ bot = Client(
     'trimmer',
     bot_token=BOT_TOKEN,
     api_id=API_ID,
-    api_hash=API_HASH,
-    plugins=plugins
+    api_hash=API_HASH
     )
 
 @Client.on_message((filters.video | filters.document))
